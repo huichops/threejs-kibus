@@ -1,10 +1,3 @@
-var mapu = [];
-mapu[0] = [0, 0, 0, 0, 1];
-mapu[1] = [0, 1, 1, 1, 0];
-mapu[2] = [0, 0, 0, 0, 0];
-mapu[3] = [0, 1, 1, 1, 0];
-mapu[4] = [0, 0, 0, 0, 0];
-
 function aStar(map, start, end) {
   var open = [],
     current,
@@ -30,7 +23,9 @@ function aStar(map, start, end) {
       return buildPath(current);
     }
 
-    neighbors = getAdjacent(map, current.y, current.x);
+    neighbors = map.getAdjacent(current.y, current.x);
+    console.log(neighbors);
+    //neighbors = getAdjacent(map, current.y, current.x);
 
     for (i = 0; i<neighbors.length; i++) {
       //console.log(neighbor);
