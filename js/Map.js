@@ -54,6 +54,8 @@ Map.prototype.loadMap = function(array) {
         tile: tile
       });
 
+      tile.val = array[i][j];
+      tile.mesh.tile = tile;
       if (array[i][j]) {
         tile.mesh.material.color.setHex(0xCC0000);
       }

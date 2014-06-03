@@ -42,6 +42,7 @@
 
 <script type="text/javascript">
 
+var domEvents;
 var stats, scene, renderer;
 var camera, cameraControl;
 var size = 5;
@@ -95,13 +96,12 @@ var map;
 				THREEx.FullScreen.bindKey();		
 				document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";
 			}
+      domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
 			// here you add your objects
 			// - you will most likely replace this part by your own
-      var cubes = [];
-      var floor = [];
       var mapu = [];
-      map = new Map(scene, size, size);
+      map = new Map(domEvents, scene);
 
       mapu[0] = [0, 0, 0, 0, 1];
       mapu[1] = [0, 1, 1, 1, 0];
@@ -116,14 +116,10 @@ var map;
     //  cameraControls.target.x = -0.4;
     //  cameraControls.target.z = 0;
     //  cameraControls.target.y = 0.4;
-
-
-
-      console.log(map);
 		}
 
     function findPath() {
-      path = aStar(map, map.grid[0][0], map.grid[2][4]);
+      path = aStar(map, map.grid[0][0], map.grid[1][4]);
       path.forEach(function(node, index) {
           var target = node.tile.mesh.material.color;
           var targetRot = node.tile.mesh.rotation;
@@ -172,15 +168,12 @@ var map;
 
 		// animation loop
 		function animate() {
-
 			// loop on request animation loop
 			// - it has to be at the begining of the function
 			// - see details at http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 			requestAnimationFrame( animate );
-
 			// do the render
 			render();
-
 			// update stats
       TWEEN.update();
       stats.update();
@@ -188,10 +181,8 @@ var map;
 
 		// render the scene
 		function render() {
-
 			// update camera controls
       //cameraControls.update();
-
 			// actually render the scene
 			renderer.render( scene, camera );
 		}

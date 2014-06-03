@@ -1,4 +1,5 @@
-function Tile(scene) {
+function Tile(dom, scene) {
+  this.dom = dom;
   this.scene = scene;
   Tile.side = 0.2;
   this.geometry = new THREE.CubeGeometry(Tile.side,Tile.side,Tile.side,1,1,1);
@@ -19,6 +20,7 @@ Tile.prototype.init = function(){
   this.mesh = new THREE.Mesh(this.geometry,this.material);
   this.mesh2 = new THREE.Mesh(this.geometry,this.wireframe);
 
+  this.dom.addEventListener(this.mesh, 'click', this.toggleObstacle, false);
   this.mesh.position.x = 1;
   this.mesh.position.y = -5;
   this.mesh.position.z = 0;
@@ -27,5 +29,17 @@ Tile.prototype.init = function(){
   this.mesh2.position.z = 0;
   scene.add(this.mesh2);
   scene.add(this.mesh);
-}
+};
+
+Tile.prototype.toggleObstacle = function(object) {
+  console.log(object.target.tile);
+
+  if (object.target.tile.val == 1) {
+    object.target.material.color.setHex(0x000000); 
+    object.target.tile.val = 0;
+  } else {
+    object.target.material.color.setHex(0xCC0000); 
+    object.target.tile.val = 1;
+  }
+};
 
