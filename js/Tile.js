@@ -12,7 +12,7 @@ Tile.prototype.init = function(){
   var color = '#'+Math.floor(Math.random()*16777215).toString(16);
 
   this.material = new THREE.MeshBasicMaterial({color: 0x222222});
-  this.wireframe = new THREE.MeshBasicMaterial({color:0x6666FF,
+  this.wireframe = new THREE.MeshBasicMaterial({color:0xEEEEEE,
       wireframe: true,
       wireframeLinewidth: 20 });
 
