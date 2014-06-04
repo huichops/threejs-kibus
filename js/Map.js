@@ -18,7 +18,7 @@ Map.prototype.getAdjacent = function(y, x) {
       jj = x + pos[1][i];
 
     console.log(ii, jj);
-    if ( ii >= 0 && ii <= this.height && jj >= 0 && jj <= this.width ) {
+    if ( ii >= 0 && ii < this.height && jj >= 0 && jj < this.width ) {
       if (this.grid[ii][jj].tile.val == 0) {
         adjacent.push(this.grid[ii][jj]);
       }
