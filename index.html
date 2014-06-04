@@ -18,6 +18,7 @@
 		<script src="vendor/threex/THREEx.WindowResize.js"></script>
     <script src='vendor/threex/threex.solidwireframe.js'></script>
     <script src='vendor/threex/threex.domevents.js'></script>
+    <script src='vendor/threex/THREEx.KeyboardState.js'></script>
 		<script src="vendor/threex.dragpancontrols.js"></script>
 
     <script src="js/Map.js"></script>
@@ -42,11 +43,10 @@
 
 <script type="text/javascript">
 
-var domEvents;
-var stats, scene, renderer;
+var domEvents, stats, scene, renderer;
 var camera, cameraControl;
-var size = 5;
 var map;
+var searched = false;
 
 		if( !init() )	animate();
 
@@ -80,7 +80,7 @@ var map;
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 1000 );
-			camera.position.set(-2, 5, 2);
+			camera.position.set(-5, 8, 5);
       camera.lookAt( new THREE.Vector3(0, -0, 0.2));
 			scene.add(camera);
 
@@ -96,8 +96,26 @@ var map;
 				THREEx.FullScreen.bindKey();		
 				document.getElementById('inlineDoc').innerHTML	+= "- <i>f</i> for fullscreen";
 			}
+
+      // dom events in scene
       domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
+      // keyboard listener
+      var keyboard	= new THREEx.KeyboardState(renderer.domElement);
+      console.log(keyboard);
+      renderer.domElement.setAttribute("tabIndex", "0");
+      renderer.domElement.focus();
+
+      keyboard.domElement.addEventListener('keyup', function(event){
+        if ( keyboard.eventMatches(event, 'space') && !searched ) {
+          searched = true;      
+          findPath();
+        }
+        if ( keyboard.eventMatches(event, 'h') ) {
+          console.log('house');
+        }
+
+      });
 			// here you add your objects
 			// - you will most likely replace this part by your own
       var mapu = [];
@@ -109,7 +127,8 @@ var map;
       mapu[3] = [0, 1, 1, 1, 0];
       mapu[4] = [0, 0, 0, 0, 0];
 
-      map.loadMap(mapu);
+      //map.loadMap(mapu);
+      map.setRandom(10, 10, 0.8);
     //  cameraControls.target.set(map.grid[2][2].tile.mesh.position);
     //  cameraControls.target.z = 0;
     //  cameraControls.target.y = 0.4;
@@ -144,25 +163,25 @@ var map;
           tr2.start();
       });
     }
-    for (var i = 0; i<size; i++) {
-      for (var j = 0; j<size; j++) {
+
+    for (var i = 0; i<map.width; i++) {
+      for (var j = 0; j<map.height; j++) {
         var rand = Math.random() * 800 + 200;
-        var randSpeed = Math.random() * 500 + 200;
+        var randSpeed = Math.random() * 300 + 500;
         var target = map.grid[i][j].tile.mesh.position;
         var target2 = map.grid[i][j].tile.mesh2.position;
 
         var tt = new TWEEN.Tween(target)
           .to({y: 0}, ~~randSpeed)
+          .easing(TWEEN.Easing.Back.Out)
           .delay(~~rand);
         var ttt = new TWEEN.Tween(target2)
           .to({y: 0}, ~~randSpeed)
+          .easing(TWEEN.Easing.Back.Out)
           .delay(~~rand);
 
         tt.start();
         ttt.start();
-        if (i == size-1 && j == size-1) {
-          tt.onComplete(findPath);
-        }
       }
     }
 
