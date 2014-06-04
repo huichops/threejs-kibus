@@ -1,5 +1,6 @@
 function Map(scene) {
   this.scene = scene;
+  this.setted = false;
   this.grid = [];
   //for ( var i = 0; i < height; i++ ) {
     //this.grid.push([]);
@@ -17,7 +18,6 @@ Map.prototype.getAdjacent = function(y, x) {
     var ii = y + pos[0][i],
       jj = x + pos[1][i];
 
-    console.log(ii, jj);
     if ( ii >= 0 && ii < this.height && jj >= 0 && jj < this.width ) {
       if (this.grid[ii][jj].tile.val == 0) {
         adjacent.push(this.grid[ii][jj]);
@@ -27,18 +27,29 @@ Map.prototype.getAdjacent = function(y, x) {
   return adjacent;
 };
 
+Map.prototype.reset = function() {
+  for ( i = 0; i < this.height; i++ ) {
+    this.grid[i].length = 0;
+    for ( j = 0; j < this.width; j++ ) {
+      scene.remove(this.grid[i][j].tile);
+    }
+  }
+  this.grid.length = 0;
+}
+
 Map.prototype.setRandom = function(width, height, limit) {
-  var i, j, rand;
+  if (this.setted) this.reset();
+  this.setted = true;
+  var i, j, rand, tile;
   this.width = width;
   this.height = height;
-  map.grid.length = 0;
 
   for ( i = 0; i < height; i++ ) {
-    map.grid.push([]);
+    this.grid.push([]);
 
     for ( j = 0; j < width; j++ ) {
       rand = Math.random();
-      var tile = new Tile(this.scene);
+      tile = new Tile(this.scene);
       tile.init();
       tile.mesh.position.x = i*-0.2;
       tile.mesh2.position.x = i*-0.2;

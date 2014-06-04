@@ -1,10 +1,21 @@
 function aStar(map, start, end) {
+
   var open = [],
+    m, n,
     current,
     neighbors,
     neighbor,
     i, newG;
 
+  for(m = 0; m < map.height; m++) {
+    for(n = 0; n < map.width; n++) {
+      map.grid[m][n].f = null;
+      map.grid[m][n].g = null;
+      map.grid[m][n].h = null;
+      map.grid[m][n].closed = false;
+      map.grid[m][n].opened = false;
+    }
+  }
   open.push(start);
   start.f = 0;
   start.g = 0;
@@ -37,7 +48,6 @@ function aStar(map, start, end) {
 
       newG = current.g + 1;
 
-      console.log(newG, neighbor.g);
       if (!neighbor.opened || newG < neighbor.g) {
         neighbor.g = newG;
         neighbor.h = neighbor.h || manhattan(neighbor, end);
