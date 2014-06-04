@@ -1,6 +1,4 @@
 function Map(scene) {
-  //this.states = { obs: true, kibus: true, house: true};
-  //this.state = states.obs;
   this.scene = scene;
   this.grid = [];
   //for ( var i = 0; i < height; i++ ) {
@@ -57,6 +55,7 @@ Map.prototype.setRandom = function(width, height, limit) {
       });
 
       tile.mesh.tile = tile;
+      tile.grid = this.grid;
 
       if (rand < limit) {
         tile.val = 0;

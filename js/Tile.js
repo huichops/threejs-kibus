@@ -32,14 +32,24 @@ Tile.prototype.init = function(){
 };
 
 Tile.prototype.toggleObstacle = function(object) {
+  var scene = object.target.parent;
   console.log(object.target.tile);
 
-  if (object.target.tile.val == 1) {
-    object.target.material.color.setHex(0x222222); 
+  console.log(object.target.parent);
+
+  if (scene.state == scene.states.obs) {
+    if (object.target.tile.val == 1) {
+      object.target.material.color.setHex(0x222222); 
+      object.target.tile.val = 0;
+    } else {
+      object.target.material.color.setHex(0xCC1111); 
+      object.target.tile.val = 1;
+    }
+  }
+  else if (scene.state == scene.states.kibus) {
+    object.target.material.color.setHex(0x1111CC); 
     object.target.tile.val = 0;
-  } else {
-    object.target.material.color.setHex(0xCC1111); 
-    object.target.tile.val = 1;
+    console.log(object.target.tile.grid);
   }
 };
 
