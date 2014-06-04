@@ -48,12 +48,12 @@ var camera, cameraControl;
 var map;
 var searched = false;
 
-		if( !init() )	animate();
+		if ( !init() )	animate();
 
 		// init the scene
 		function init(){
 
-			if( Detector.webgl ){
+			if ( Detector.webgl ){
 				renderer = new THREE.WebGLRenderer({
 					antialias		: true,	// to get smoother output
 					preserveDrawingBuffer	: true	// to allow screenshot
@@ -63,7 +63,7 @@ var searched = false;
 			//}else{
 			//	Detector.addGetWebGLMessage();
 			//	return true;
-			}else{
+			} else {
 				renderer	= new THREE.CanvasRenderer();
 			}
 			renderer.setSize( window.innerWidth, window.innerHeight );
@@ -77,6 +77,8 @@ var searched = false;
 
 			// create a scene
 			scene = new THREE.Scene();
+      scene.states = { obs: 0, kibus: 1, house: 2};
+      scene.state = scene.states.obs;
 
 			// put a camera in the scene
 			camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 1000 );
@@ -112,7 +114,12 @@ var searched = false;
           findPath();
         }
         if ( keyboard.eventMatches(event, 'h') ) {
+          scene.state = scene.states.house;
           console.log('house');
+        }
+        if ( keyboard.eventMatches(event, 'k') ) {
+          scene.state = scene.states.kibus;
+          console.log('kibus');
         }
 
       });
