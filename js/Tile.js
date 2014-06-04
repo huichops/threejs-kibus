@@ -35,7 +35,7 @@ Tile.prototype.toggleObstacle = function(object) {
   console.log(object.target.tile);
 
   if (object.target.tile.val == 1) {
-    object.target.material.color.setHex(0x000000); 
+    object.target.material.color.setHex(0x222222); 
     object.target.tile.val = 0;
   } else {
     object.target.material.color.setHex(0xCC0000); 
