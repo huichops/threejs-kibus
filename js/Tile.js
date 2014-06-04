@@ -38,7 +38,7 @@ Tile.prototype.toggleObstacle = function(object) {
     object.target.material.color.setHex(0x222222); 
     object.target.tile.val = 0;
   } else {
-    object.target.material.color.setHex(0xCC0000); 
+    object.target.material.color.setHex(0xCC1111); 
     object.target.tile.val = 1;
   }
 };
