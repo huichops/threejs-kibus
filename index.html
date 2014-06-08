@@ -54,7 +54,7 @@ var params  = {
   restart: init,
   find: findPath
 };
-var start = { x: 0, y: 0 };
+var start = { x: 9, y: 9 }, searching = false;
 
 		if ( !init() )	animate();
 
@@ -152,33 +152,41 @@ var start = { x: 0, y: 0 };
 
     function findPath() {
 
-      path = aStar(map, map.grid[0][0], map.grid[4][1]);
+      if (searching) return;
+      searching = true;
+      path = aStar(map, map.grid[0][0], map.grid[start.x][start.y]);
 
       path.forEach(function(node, index) {
-          var target = node.tile.mesh.material.color;
-          var targetRot = node.tile.mesh.rotation;
-          var targetRot2 = node.tile.mesh2.rotation;
+        var target = node.tile.mesh.material.color;
+        var targetRot = node.tile.mesh.rotation;
+        var targetRot2 = node.tile.mesh2.rotation;
 
-          var tw = new TWEEN.Tween(target)
-            .to({r: 0, g: 0.8, b: 0}, 500)
-            .delay(index*200)
-            .chain(new TWEEN.Tween(target).to({r: 0.13, g: 0.13, b: 0.13}, 500));
+        var tw = new TWEEN.Tween(target)
+          .to({r: 0, g: 0.8, b: 0}, 500)
+          .delay(index*200)
+          .chain(new TWEEN.Tween(target).to({r: 0.13, g: 0.13, b: 0.13}, 500));
 
-          var tr = new TWEEN.Tween(targetRot)
-            .to({z: -Math.PI/2}, 700)
-            .delay(index*200)
-            .easing(TWEEN.Easing.Elastic.InOut);
+        var tr = new TWEEN.Tween(targetRot)
+          .to({z: -Math.PI/2}, 700)
+          .delay(index*200)
+          .easing(TWEEN.Easing.Elastic.InOut);
 
-          var tr2 = new TWEEN.Tween(targetRot2)
-            .to({z: -Math.PI/2}, 700)
-            .delay(index*200)
-            .easing(TWEEN.Easing.Elastic.InOut);
+        var tr2 = new TWEEN.Tween(targetRot2)
+          .to({z: -Math.PI/2}, 700)
+          .delay(index*200)
+          .easing(TWEEN.Easing.Elastic.InOut);
 
 
-          tw.start();
-          tr.start();
-          tr2.start();
+        tw.start();
+        tr.start();
+        tr2.start();
+        if ( index == path.length - 1 ) {
+          tr2.onComplete(function() {
+            searching = false;
+          });
+        }
       });
+      
     }
 
     for (var i = 0; i<map.width; i++) {
